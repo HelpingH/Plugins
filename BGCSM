@@ -1,0 +1,58 @@
+package bukkit.nat;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+
+public class BGCSM extends JavaPlugin implements Listener {
+	
+	public void onEnable() {
+		getServer().getPluginManager().registerEvents(this, this);
+		Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+		
+		
+	}
+	
+	public boolean onComand(CommandSender sender, Command command, String label, String[] args) {
+		// CS <player> <message>
+		if(sender instanceof Player) {
+			Player player = (Player) sender;
+			if(args.length<3){
+				player.sendMessage(ChatColor.RED + "/CS <Player> <Message>");
+				return false;
+			}
+			String playerToSend = args[0];
+			
+			String msg = "";
+			for(int i = 1; i < args.length; i++)
+				msg += args[i] + " ";
+		
+				ByteArrayOutputStream b = new ByteArrayOutputStream();
+				DataOutputStream out = new DataOutputStream(b);
+				
+				try {
+					
+				
+				out.writeUTF("Message");
+				out.writeUTF(playerToSend);
+				out.writeUTF(msg);
+			}catch (Exception e) 
+			{
+				e.printStackTrace();
+			
+			}
+			player.sendPluginMessage(this, "BungeeCord", b.toByteArray());
+			
+		}
+		return false;
+		
+	}
+
+}
