@@ -1,4 +1,4 @@
-package bukkit.nat;
+package com.HelpingHand;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
